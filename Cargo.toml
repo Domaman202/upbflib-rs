@@ -2,5 +2,8 @@
 name = "upbflib"
 version = "1.0.0"
 edition = "2024"
+description = "Библиотека для работы с форматом UPBF"
+license = "MIT"
+repository = "https://github.com/Domaman202/upbflib-rs"
 
 [dependencies]
