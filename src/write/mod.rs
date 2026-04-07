@@ -166,9 +166,9 @@ impl UPBFWriter {
         if !version.is_supported() { return Err(UPBFWriterWriteError::UnsupportedVersion.into()); }
         match r#type {
             UPBFType::MediumAlignedLittleEndian => RawWriterMediumAlignedLittleEndian::write(self),
-            UPBFType::MediumAlignedBigEndian => RawWriterMediumAlignedBigEndian::write(self),
-            UPBFType::BigAlignedLittleEndian => RawWriterBigAlignedLittleEndian::write(self),
-            UPBFType::BigAlignedBigEndian => RawWriterBigAlignedBigEndian::write(self)
+            UPBFType::MediumAlignedBigEndian    => RawWriterMediumAlignedBigEndian   ::write(self),
+            UPBFType::BigAlignedLittleEndian    => RawWriterBigAlignedLittleEndian   ::write(self),
+            UPBFType::BigAlignedBigEndian       => RawWriterBigAlignedBigEndian      ::write(self)
         }
     }
 }

@@ -118,9 +118,9 @@ impl<'a> UPBFReader<'a> {
         if !self.is_read_supported() { return Err(UPBFReaderHeaderReadError::UnsupportedVersion.into()) };
         match self.file_type {
             UPBFType::MediumAlignedLittleEndian => RawReaderMediumAlignedLittleEndian::read(&self, self.file_type, self.file_version),
-            UPBFType::MediumAlignedBigEndian => RawReaderMediumAlignedBigEndian::read(&self, self.file_type, self.file_version),
-            UPBFType::BigAlignedLittleEndian => RawReaderBigAlignedLittleEndian::read(&self, self.file_type, self.file_version),
-            UPBFType::BigAlignedBigEndian => RawReaderBigAlignedBigEndian::read(&self, self.file_type, self.file_version)
+            UPBFType::MediumAlignedBigEndian    => RawReaderMediumAlignedBigEndian   ::read(&self, self.file_type, self.file_version),
+            UPBFType::BigAlignedLittleEndian    => RawReaderBigAlignedLittleEndian   ::read(&self, self.file_type, self.file_version),
+            UPBFType::BigAlignedBigEndian       => RawReaderBigAlignedBigEndian      ::read(&self, self.file_type, self.file_version)
         }
     }
 }
