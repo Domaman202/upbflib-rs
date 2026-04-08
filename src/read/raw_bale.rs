@@ -40,7 +40,7 @@ impl RawReaderBigAlignedLittleEndian {
             let name_len = u32::from_le_bytes(name_len) as usize;
             let name_len_unaligned = name_len;
             let name_len = align_len_big(name_len);
-            if source.len() < offset + 0x18 + name_len { return Err(UPBFReaderFormatReadError::InvalidNameLength.into()) }
+            if source.len() < offset + 0x10 + name_len { return Err(UPBFReaderFormatReadError::InvalidNameLength.into()) }
             let data_id = (&source[offset + 0xC..offset + 0x10]).try_into();
             let data_id = if let Ok(ok) = data_id { ok } else { return Err(UPBFReaderError::InvalidFileLength) };
             let data_id = u32::from_le_bytes(data_id);
