@@ -49,9 +49,9 @@ pub enum UPBFWriterDataAddError {
 #[derive(Debug)]
 pub enum UPBFWriterWriteError {
     UnsupportedVersion,
-    InvalidNameLength,
-    InvalidVersionLength,
-    InvalidFormatNameLength,
+    InvalidBuildNameLength,
+    InvalidBuildVersionLength,
+    InvalidDataFormatNameLength,
     InvalidDataNameLength,
     InvalidDataLength,
     InvalidOffset,

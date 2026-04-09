@@ -56,13 +56,8 @@ impl Into<u8> for UPBFVersion {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use read::{
-        UPBFReader, UPBFReaderError,
-        UPBFReaderFormatReadError, UPBFReaderHeaderReadError, UPBFReaderNameReadError,
-    };
-    use write::{
-        UPBFWriter, UPBFWriterDataAddError, UPBFWriterError, UPBFWriterWriteError,
-    };
+    use read::{UPBFReader, UPBFReaderError, UPBFReaderFormatReadError, UPBFReaderHeaderReadError };
+    use write::{UPBFWriter, UPBFWriterDataAddError, UPBFWriterError, UPBFWriterWriteError };
 
     // Helper: create a writer with some data formats and data blocks
     fn create_test_writer(
@@ -254,7 +249,7 @@ mod tests {
         let reader = UPBFReader::new(&bytes).unwrap();
         let err = reader.read().unwrap_err();
         match err {
-            UPBFReaderError::Name(UPBFReaderNameReadError::InvalidLength) => (),
+            UPBFReaderError::Header(UPBFReaderHeaderReadError::InvalidBuildNameLength) => (),
             _ => panic!("expected InvalidLength"),
         }
     }
@@ -331,7 +326,7 @@ mod tests {
             .write(UPBFType::MediumAlignedLittleEndian, UPBFVersion::LAST_SUPPORTED)
             .unwrap_err();
         match err {
-            UPBFWriterError::Write(UPBFWriterWriteError::InvalidNameLength) => (),
+            UPBFWriterError::Write(UPBFWriterWriteError::InvalidBuildNameLength) => (),
             _ => panic!("expected InvalidNameLength"),
         }
     }
@@ -361,7 +356,7 @@ mod tests {
         let reader = UPBFReader::new(&bytes).unwrap();
         let err = reader.read().unwrap_err();
         match err {
-            UPBFReaderError::Format(UPBFReaderFormatReadError::InvalidOffset) => (),
+            UPBFReaderError::DataFormat(UPBFReaderFormatReadError::InvalidOffset) => (),
             _ => panic!("expected InvalidOffset"),
         }
     }

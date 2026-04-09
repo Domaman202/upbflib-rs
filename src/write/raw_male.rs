@@ -14,8 +14,8 @@ impl RawWriterMediumAlignedLittleEndian {
         out.write(&u8::to_le_bytes(UPBFVersion::LAST_SUPPORTED.into()))?;
         out.write(&[0; 4])?; // FORMAT_ENTRY
         out.write(&[0; 4])?; // DATA_ENTRY
-        out.write(&u32::to_le_bytes(usize_to_u32(writer.build_name.len(), UPBFWriterWriteError::InvalidNameLength.into())?))?;
-        out.write(&u32::to_le_bytes(usize_to_u32(writer.build_version.len(), UPBFWriterWriteError::InvalidVersionLength.into())?))?;
+        out.write(&u32::to_le_bytes(usize_to_u32(writer.build_name.len(), UPBFWriterWriteError::InvalidBuildNameLength.into())?))?;
+        out.write(&u32::to_le_bytes(usize_to_u32(writer.build_version.len(), UPBFWriterWriteError::InvalidBuildVersionLength.into())?))?;
         let (name, name_align) = str_to_bytes_align_medium(&writer.build_name);
         out.write(name)?;
         out.write(&vec![0; name_align])?;
@@ -35,7 +35,7 @@ impl RawWriterMediumAlignedLittleEndian {
                 next_write_addr = last_offset..last_offset + 0x4; // NEXT
 
                 out.write(&[0; 4])?; // NEXT
-                out.write(&u32::to_le_bytes(usize_to_u32(format.name.len(), UPBFWriterWriteError::InvalidFormatNameLength.into())?))?;
+                out.write(&u32::to_le_bytes(usize_to_u32(format.name.len(), UPBFWriterWriteError::InvalidDataFormatNameLength.into())?))?;
                 out.write(&u32::to_le_bytes(format.data_id))?;
                 let (name, name_align) = str_to_bytes_align_medium(&format.name);
                 out.write(name)?;

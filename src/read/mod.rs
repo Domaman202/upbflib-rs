@@ -46,9 +46,7 @@ pub struct UPBFDataForRead<'a> {
 pub enum UPBFReaderError {
     InvalidFileLength,
     Header(UPBFReaderHeaderReadError),
-    Name(UPBFReaderNameReadError),
-    Version(UPBFReaderVersionReadError),
-    Format(UPBFReaderFormatReadError),
+    DataFormat(UPBFReaderFormatReadError),
     Data(UPBFReaderDataReadError)
 }
 
@@ -57,18 +55,10 @@ pub enum UPBFReaderHeaderReadError {
     InvalidMagic,
     InvalidType,
     UnsupportedVersion,
-}
-
-#[derive(Debug)]
-pub enum UPBFReaderNameReadError {
-    InvalidLength,
-    InvalidString,
-}
-
-#[derive(Debug)]
-pub enum UPBFReaderVersionReadError {
-    InvalidLength,
-    InvalidString,
+    InvalidBuildNameLength,
+    InvalidBuildNameString,
+    InvalidBuildVersionLength,
+    InvalidBuildVersionString,
 }
 
 #[derive(Debug)]
@@ -193,21 +183,9 @@ impl Into<UPBFReaderError> for UPBFReaderHeaderReadError {
     }
 }
 
-impl Into<UPBFReaderError> for UPBFReaderNameReadError {
-    fn into(self) -> UPBFReaderError {
-        UPBFReaderError::Name(self)
-    }
-}
-
-impl Into<UPBFReaderError> for UPBFReaderVersionReadError {
-    fn into(self) -> UPBFReaderError {
-        UPBFReaderError::Version(self)
-    }
-}
-
 impl Into<UPBFReaderError> for UPBFReaderFormatReadError {
     fn into(self) -> UPBFReaderError {
-        UPBFReaderError::Format(self)
+        UPBFReaderError::DataFormat(self)
     }
 }
 
