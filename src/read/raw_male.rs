@@ -1,5 +1,5 @@
 use crate::raw::align_len_medium;
-use crate::read::{UPBFDataForRead, UPBFDataFormatForRead, UPBFReadResult, UPBFReader, UPBFReaderDataReadError, UPBFReaderError, UPBFReaderFormatReadError, UPBFReaderHeaderReadError };
+use crate::read::{UPBFDataForRead, UPBFDataFormatForRead, UPBFReadResult, UPBFReader, UPBFReaderDataReadError, UPBFReaderError, UPBFReaderDataFormatReadError, UPBFReaderHeaderReadError };
 use crate::{UPBFType, UPBFVersion};
 
 pub struct RawReaderMediumAlignedLittleEndian;
@@ -29,11 +29,11 @@ impl RawReaderMediumAlignedLittleEndian {
         let build_version = build_version.map_err(|_| UPBFReaderHeaderReadError::InvalidBuildVersionString.into())?;
         // Data Formats
         let offset = (&source[0x8..0xC]).try_into();
-        let offset = offset.map_err(|_| UPBFReaderFormatReadError::InvalidOffset.into())?;
+        let offset = offset.map_err(|_| UPBFReaderDataFormatReadError::InvalidOffset.into())?;
         let mut offset = u32::from_le_bytes(offset) as usize;
         let mut data_format_list = Vec::<UPBFDataFormatForRead>::new();
         while offset != 0 {
-            if source.len() < offset { return Err(UPBFReaderFormatReadError::InvalidOffset.into()) }
+            if source.len() < offset { return Err(UPBFReaderDataFormatReadError::InvalidOffset.into()) }
             let next_offset = (&source[offset..offset + 0x4]).try_into();
             let next_offset = next_offset.map_err(|_| UPBFReaderError::InvalidFileLength)?;
             let next_offset = u32::from_le_bytes(next_offset) as usize;
@@ -42,14 +42,14 @@ impl RawReaderMediumAlignedLittleEndian {
             let name_len = u32::from_le_bytes(name_len) as usize;
             let name_len_unaligned = name_len;
             let name_len = align_len_medium(name_len);
-            if source.len() < offset + 0xC + name_len { return Err(UPBFReaderFormatReadError::InvalidNameLength.into()) }
+            if source.len() < offset + 0xC + name_len { return Err(UPBFReaderDataFormatReadError::InvalidNameLength.into()) }
             let data_id = (&source[offset + 0x8..offset + 0xC]).try_into();
             let data_id = data_id.map_err(|_| UPBFReaderError::InvalidFileLength)?;
             let data_id = u32::from_le_bytes(data_id);
             let name = &source[offset + 0xC..offset + 0xC + name_len_unaligned];
             let name = Vec::from(name);
             let name = String::from_utf8(name);
-            let name = name.map_err(|_| UPBFReaderFormatReadError::InvalidNameString.into())?;
+            let name = name.map_err(|_| UPBFReaderDataFormatReadError::InvalidNameString.into())?;
             data_format_list.push(UPBFDataFormatForRead::new(data_id, name));
             offset = next_offset;
         }

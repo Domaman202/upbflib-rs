@@ -56,7 +56,7 @@ impl Into<u8> for UPBFVersion {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use read::{UPBFReader, UPBFReaderError, UPBFReaderFormatReadError, UPBFReaderHeaderReadError };
+    use read::{UPBFReader, UPBFReaderError, UPBFReaderDataFormatReadError, UPBFReaderHeaderReadError };
     use write::{UPBFWriter, UPBFWriterDataAddError, UPBFWriterError, UPBFWriterWriteError };
 
     // Helper: create a writer with some data formats and data blocks
@@ -356,7 +356,7 @@ mod tests {
         let reader = UPBFReader::new(&bytes).unwrap();
         let err = reader.read().unwrap_err();
         match err {
-            UPBFReaderError::DataFormat(UPBFReaderFormatReadError::InvalidOffset) => (),
+            UPBFReaderError::DataFormat(UPBFReaderDataFormatReadError::InvalidOffset) => (),
             _ => panic!("expected InvalidOffset"),
         }
     }

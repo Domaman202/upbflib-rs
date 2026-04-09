@@ -46,7 +46,7 @@ pub struct UPBFDataForRead<'a> {
 pub enum UPBFReaderError {
     InvalidFileLength,
     Header(UPBFReaderHeaderReadError),
-    DataFormat(UPBFReaderFormatReadError),
+    DataFormat(UPBFReaderDataFormatReadError),
     Data(UPBFReaderDataReadError)
 }
 
@@ -62,7 +62,7 @@ pub enum UPBFReaderHeaderReadError {
 }
 
 #[derive(Debug)]
-pub enum UPBFReaderFormatReadError {
+pub enum UPBFReaderDataFormatReadError {
     InvalidOffset,
     InvalidNameLength,
     InvalidNameString,
@@ -183,7 +183,7 @@ impl Into<UPBFReaderError> for UPBFReaderHeaderReadError {
     }
 }
 
-impl Into<UPBFReaderError> for UPBFReaderFormatReadError {
+impl Into<UPBFReaderError> for UPBFReaderDataFormatReadError {
     fn into(self) -> UPBFReaderError {
         UPBFReaderError::DataFormat(self)
     }
